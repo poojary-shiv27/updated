@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: group-c-hotel
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: group-c-hotel
+  template:
+    metadata:
+      name: group-c-hotel
+      labels:
+        app: group-c-hotel
+    spec:
+      containers:
+      - name: group-c-hotel
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: postgres_user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: postgres_password
+          - name: POSTGRES_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: hostname-config
+                key: postgres_host
+        image: gcr.io/cg-gcp-jee-pt-09-07-22-160/group-c-hotel:v1
